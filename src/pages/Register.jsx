@@ -1,6 +1,7 @@
 import React, { useState } from "react"; // Fixed import
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify"; // Added toast import 12
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -18,7 +19,7 @@ function Register() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => { // Fixed typo: handSubmit -> handleSubmit
+  const handleSubmit  = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
@@ -28,16 +29,28 @@ function Register() {
       
       // Axios puts the data in .data. 
       // If it reaches this line, the request was successful (2xx status).
-      console.log("Registration successful:", response.data);
-      alert("Registration successful! Please login.");
+
+      //success path (201)
+      toast.success(response.data.message || "Registration succeessful!");
       navigate("/login");
+  
       
     } catch (error) {
-      // Axios errors contain the server message in error.response.data
-      console.error("Registration failed:", error.response?.data || error.message);
-      alert("Registration failed. Please try again.");
-    }
-  };
+      //safely ectract backend message
+      const backendMessage=
+      error?.response?.data?.message;
+
+      const statusCode = 
+      error?.response?.status;
+      
+      if (backendMessage) {
+        toast.error(backendMessage);
+      } else if (statusCode) {
+        toast.error(`Registration failed (${statusCode}). please try again.`);
+      } else {
+        toast.error("network error. please check your connection.");
+      }
+  }};
 
   return (
     <div>
@@ -46,7 +59,7 @@ function Register() {
       </h1>
       <form
         className="mt-4 w-[90%] md:w-[40%] mx-auto flex flex-col gap-2"
-        onSubmit={handleSubmit}
+        onSubmit={ handleSubmit }
       >
         <input
           type="text"
@@ -79,5 +92,6 @@ function Register() {
     </div>
   );
 }
+
 
 export default Register;

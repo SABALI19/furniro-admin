@@ -4,7 +4,9 @@ import Users from "./pages/Users"
 import Login from "./pages/Login"
 import Furniture from "./pages/Furniture"
 import Dashboard from "./pages/Dashboard"
+import {ToastContainer} from "react-toastify"
 import NotFound from "./pages/NotFound"
+import ProtectedRoute from "./components/auth/ProtectedRoute"
 import React from "react"
 function App() {
 
@@ -20,6 +22,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
+    <ToastContainer />
     </>
   )
 }
