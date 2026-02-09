@@ -6,8 +6,8 @@ import Login from "./pages/Login"
 import Furniture from "./pages/Furniture"
 import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
-import React from "react"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
+import React from "react"
 import Unauthorized from "./pages/Unauthorized"
 function App() {
 
