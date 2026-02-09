@@ -1,6 +1,7 @@
 import React, { useState } from "react"; // Fixed import
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -11,33 +12,47 @@ function Register() {
   });
 
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_BASE_URL || "http://localhost:5000/";
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   // Shared change handler to keep code clean
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => { // Fixed typo: handSubmit -> handleSubmit
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       const response = await axios.post(
         `${baseUrl}/api/user/register`,
-        formData
+        formData,
+
       );
-      
-      // Axios puts the data in .data. 
-      // If it reaches this line, the request was successful (2xx status).
-      console.log("Registration successful:", response.data);
-      alert("Registration successful! Please login.");
+
+      // Success path (201)
+      toast.success(response.data.message || "Registration successful!");
       navigate("/login");
-      
+
     } catch (error) {
-      // Axios errors contain the server message in error.response.data
-      console.error("Registration failed:", error.response?.data || error.message);
-      alert("Registration failed. Please try again.");
+      // Safely extract backend message
+      const backendMessage =
+        error?.response?.data?.message;
+
+      const statusCode =
+        error?.response?.status;
+
+      if (backendMessage) {
+        toast.error(backendMessage);
+      } else if (statusCode) {
+        toast.error(`Registration failed (${statusCode}). Please try again.`);
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
+
+      console.error("Registration error:", error);
     }
   };
+
 
   return (
     <div>
@@ -72,7 +87,10 @@ function Register() {
           value={formData.password}
           onChange={handleChange}
         />
-        <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:bg-blue-600">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 w-full hover:bg-blue-600"
+        >
           Register
         </button>
       </form>
