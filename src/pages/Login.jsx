@@ -25,29 +25,23 @@ function Login() {
     try {
       const response = await axios.post(`${baseUrl}/api/user/login`, formData);
 
-      // Extract token and role from response
+      // Extract token and user data from response
       const { token, data } = response.data;
-      const userRole = data?.role;
-
+      const userRole = data?.role
+      
       // Validate response data
-      if (!token || !userRole) {
+      if (!token|| !userRole) {
         throw new Error("Invalid response from server");
       }
 
-      // Store auth data using utility
+      // Store auth data using utility (store role if needed, but all users go to admin dashboard)
       authUtils.setAuthData(token, userRole);
 
       toast.success(response.data.message || "Login successful!");
 
-      // Navigate based on role (optional - customize as needed)
+      // Navigate to admin dashboard for all users
       setTimeout(() => {
-        if (userRole === "admin") {
-          navigate("/dashboard");
-        } else if (userRole === "user") {
-          navigate("/");
-        } else {
-          navigate("/dashboard");
-        }
+        navigate("/admin/dashboard"); // or just "/dashboard" if that's your admin route
       }, 1000);
 
     } catch (error) {
@@ -59,7 +53,7 @@ function Login() {
       } else if (statusCode === 401) {
         toast.error("Invalid email or password");
       } else if (statusCode === 403) {
-        toast.error("Access denied");
+        toast.error("Access denied. Admin privileges required.");
       } else if (statusCode) {
         toast.error(`Login failed (${statusCode})`);
       } else if (error.message) {
@@ -78,10 +72,10 @@ function Login() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
-          Welcome Back
+          Admin Login
         </h1>
         <p className="text-center text-gray-600 mb-8">
-          Login to your account
+          Login to manage products
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -122,8 +116,20 @@ function Login() {
             disabled={loading}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400 disabled:cursor-not-allowed font-medium"
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Logging in..." : "Login to Dashboard"}
           </button>
+
+          <p className="text-center text-gray-600 mt-4">
+            Don't have an account?{" "}
+            <button
+              type="button"
+              onClick={() => navigate("/register")}
+              className="text-blue-600 hover:underline font-medium"
+              disabled={loading}
+            >
+              Register here
+            </button>
+          </p>
         </form>
       </div>
     </div>
