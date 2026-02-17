@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -108,4 +108,4 @@ function ProductsTable() {
   );
 }
 
-export default ProductsTable;
+export default ProductsTable
