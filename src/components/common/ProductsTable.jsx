@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { authUtils } from "../../utils/auth";
+import { Link } from "react-router-dom";
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
@@ -129,7 +130,9 @@ function ProductsTable() {
                             <td className="p-4 flex items-center gap-3">
                                 <div className="w-12 h-12 bg-gray-200 rounded-md overflow-hidden">
                                     <img
-                                        src={furniture.images?.[0] || "/placeholder.png"}
+                                        src={furniture.images?.[0]
+                                            ? `${baseUrl}/uploads/${furniture.images[0]}`
+                                            : "/placeholder.png"}
                                         alt={furniture.name}
                                         className="object-cover w-full h-full"
                                     />
@@ -169,6 +172,8 @@ function ProductsTable() {
                             </td>
 
                             <td className="p-4 text-right">
+                                <button className="text-green-600 hover:underline mr-3">
+                                    <Link to={`/furniture-details/${furniture._id}`}> View Details</Link>                                </button>
                                 <button className="text-blue-600 hover:underline mr-3">
                                     Edit
                                 </button>
@@ -187,7 +192,7 @@ function ProductsTable() {
                     ))}
                 </tbody>
             </table>
-        </div>
+        </div >
     );
 }
 

@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
 import React from "react"
 import Unauthorized from "./pages/Unauthorized"
+import FurnitureDetails from "./pages/FurnitureDetails"
 function App() {
 
   return (
@@ -22,6 +23,11 @@ function App() {
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/furniture-details/:id" element={
+            <ProtectedRoute>
+              <FurnitureDetails />
             </ProtectedRoute>
           } />
           <Route path="*" element={<NotFound />} />
