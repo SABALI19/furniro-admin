@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { authUtils } from "../../utils/auth";
 import { NavLink } from "react-router-dom";
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function ProductsTable() {
@@ -74,7 +75,7 @@ function ProductsTable() {
                   {furniture.quantity} pcs
                 </td>
                 <td class="p-4">
-                  {furniture.inStock === true ? (
+                  {furniture.inStock ? (
                     <span class="px-2 py-1 text-xs font-medium bg-green-100 text-green-700 rounded-full">
                       In Stock
                     </span>
