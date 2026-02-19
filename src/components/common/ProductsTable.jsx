@@ -30,6 +30,7 @@ function ProductsTable() {
           ...authUtils.getAuthHeaders(),
         },
       },
+
     );
     (res.data, toast.success(res.data.message));
     fetchAllFurniture()

@@ -7,9 +7,9 @@ import Furniture from "./pages/Furniture"
 import Dashboard from "./pages/Dashboard"
 import NotFound from "./pages/NotFound"
 import ProtectedRoute from "./components/auth/ProtectedRoute"
-import React from "react"
 import Unauthorized from "./pages/Unauthorized"
 import ViewDetails from "./pages/ViewDetails"
+
 function App() {
 
   return (
