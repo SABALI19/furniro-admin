@@ -2,19 +2,18 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { buildApiUrl } from "../utils/api";
 
 function Register() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
-    // role is handled by backend or set to "admin" by default
+    role: "admin",
   });
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -25,7 +24,7 @@ function Register() {
 
     try {
       const response = await axios.post(
-        `${baseUrl}/api/user/register`,
+        buildApiUrl("/api/user/register"),
         formData,
       );
 

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { authUtils } from "../utils/auth";
+import { buildApiUrl } from "../utils/api";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -12,8 +13,6 @@ function Login() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_BASE_URL;
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -23,7 +22,7 @@ function Login() {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${baseUrl}/api/user/login`, formData);
+      const response = await axios.post(buildApiUrl("/api/user/login"), formData);
 
       // Extract token and user data from response
       const { token, data } = response.data;
@@ -35,7 +34,7 @@ function Login() {
       }
 
       // Store auth data using utility (store role if needed, but all users go to admin dashboard)
-      authUtils.setAuthData(token, userRole);
+      authUtils.setAuthData(token, userRole, data);
 
       toast.success(response.data.message || "Login successful!");
 

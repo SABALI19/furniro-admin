@@ -1,10 +1,19 @@
-import React from 'react';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { authUtils } from "../../utils/auth";
 
 function Header({ title, action }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    authUtils.clearAuthData();
+    navigate("/login");
+  };
+
   return (
     <header className="bg-white border-b h-16 flex items-center justify-between px-8 sticky top-0 z-10">
       <h2 className="text-lg font-semibold text-gray-700">
-        {title || 'Dashboard'}
+        {title || "Dashboard"}
       </h2>
 
       {action && (
@@ -26,6 +35,13 @@ function Header({ title, action }) {
             </div>
             <span className="text-sm text-gray-700">Admin</span>
           </div>
+          <button
+            onClick={handleLogout}
+            className="text-sm text-red-600 hover:underline"
+            type="button"
+          >
+            Logout
+          </button>
         </div>
       )}
     </header>

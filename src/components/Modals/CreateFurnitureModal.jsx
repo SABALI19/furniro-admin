@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { authUtils } from "../../utils/auth.js";
-
-const baseUrl = import.meta.env.VITE_BASE_URL;
+import { buildApiUrl } from "../../utils/api.js";
 
 function CreateFurnitureModal({ onClose, onSuccess }) {
   const [loading, setLoading] = useState(false);
@@ -111,7 +110,7 @@ function CreateFurnitureModal({ onClose, onSuccess }) {
 
       // Make API call with auth headers
       const response = await axios.post(
-        `${baseUrl}/api/furniture/create-furniture`,
+        buildApiUrl("/api/furniture/create"),
         payload,
         {
           headers: {
